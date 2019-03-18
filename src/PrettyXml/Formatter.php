@@ -111,12 +111,6 @@ class Formatter
         if ($this->isOpeningTag($part)) {
             $this->depth++;
         }
-        if ($this->isClosingCdataTag($part)) {
-            $this->preserveWhitespace = false;
-        }
-        if ($this->isOpeningCdataTag($part)) {
-            $this->preserveWhitespace = true;
-        }
     }
 
     /**
@@ -134,7 +128,7 @@ class Formatter
      */
     private function isOpeningTag($part)
     {
-        return (bool) preg_match('/^<[^\/]*>$/', $part);
+        return (bool) preg_match('/^<[^!\/]*>$/', $part);
     }
 
     /**
@@ -144,23 +138,5 @@ class Formatter
     private function isClosingTag($part)
     {
         return (bool) preg_match('/^\s*<\//', $part);
-    }
-
-    /**
-     * @param string $part
-     * @return boolean
-     */
-    private function isOpeningCdataTag($part)
-    {
-        return strpos($part, '<![CDATA[') !== false;
-    }
-
-    /**
-     * @param string $part
-     * @return boolean
-     */
-    private function isClosingCdataTag($part)
-    {
-        return strpos($part, ']]>') !== false;
     }
 }
